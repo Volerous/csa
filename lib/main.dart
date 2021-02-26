@@ -1,3 +1,4 @@
+import 'package:csa/lcu/runes/widgets/detail.dart';
 import 'package:csa/lcu/runes/widgets/list.dart';
 import 'package:flutter/material.dart';
 import 'package:lcu/lcu.dart';
@@ -25,15 +26,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(
+          title: 'Flutter Demo Home Page',
+          filePath: "C:/Riot Games/League of Legends"),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage(
-      {Key key, this.title, this.filePath})
-      : super(key: key);
+  MyHomePage({Key key, this.title, this.filePath}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -54,12 +55,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   LcuApi client;
   RunePage currentRunePage;
+
   _MyHomePageState(String filePath) {
     client = new LcuApi(filePath);
   }
 
   void _selectRunePage(RunePage page) {
-    print(page.name);
     setState(() {
       currentRunePage = page;
     });
@@ -67,9 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // String portString;
-    // portString = client.port.toString();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -79,33 +77,17 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Flexible(
               flex: 1,
-              child: FutureBuilder(
-                future: client.runeManager.allRunePages,
-                builder: (bc, AsyncSnapshot<List<RunePage>> snapshot) {
-                  if (!snapshot.hasData) {
-                    return Text("Loading");
-                  } else {
-                    return ListView.separated(
-                      separatorBuilder: (bc, i) {
-                        return Divider(
-                          color: Colors.black,
-                        );
-                      },
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (bc, i) {
-                        return RunePageListTile(
-                            snapshot.data[i], _selectRunePage);
-                      },
-                    );
-                  }
-                },
+              child: RunePageListView(
+                pages: client.runeManager.allRunePages,
+                onSelected: _selectRunePage,
               ),
             ),
-            // Flexible(
-            //   flex: 4,
-            //   child:
-            // )
-            // Flexible(child: )
+            if (currentRunePage != null)
+              Divider(
+                color: Colors.black,
+              ),
+            if (currentRunePage != null)
+              Flexible(flex: 3, child: RuneDetailView(currentRunePage))
           ],
         ),
       ),

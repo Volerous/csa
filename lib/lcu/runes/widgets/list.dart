@@ -6,10 +6,9 @@ class RunePageListTile extends StatelessWidget {
   final ValueChanged<RunePage> onSelected;
   RunePageListTile(this.page, this.onSelected);
 
-  void _handleTap(){
+  void _handleTap() {
     onSelected(page);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +23,36 @@ class RunePageListTile extends StatelessWidget {
   }
 }
 
-// class RunePageDetailView extends StatelessWidget{
+class RunePageListView extends StatefulWidget {
+  RunePageListView({Key key, this.pages, this.onSelected}) : super(key: key);
+  final Future<List<RunePage>> pages;
+  final ValueChanged<RunePage> onSelected;
+  @override
+  _RunePageListViewState createState() => _RunePageListViewState();
+}
 
-// }
+class _RunePageListViewState extends State<RunePageListView> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: widget.pages,
+      builder: (bc, AsyncSnapshot<List<RunePage>> snapshot) {
+        if (!snapshot.hasData) {
+          return Text("Loading");
+        } else {
+          return ListView.separated(
+            separatorBuilder: (bc, i) {
+              return Divider(
+                color: Colors.black,
+              );
+            },
+            itemCount: snapshot.data.length,
+            itemBuilder: (bc, i) {
+              return RunePageListTile(snapshot.data[i], widget.onSelected);
+            },
+          );
+        }
+      },
+    );
+  }
+}
