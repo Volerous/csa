@@ -13,10 +13,12 @@ class RunePageListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Text(page.name), Text(page.primaryStyleId.toString())],
+      child: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [Text(page.name), Text(page.primaryStyleId.toString())],
+        ),
       ),
       onTap: _handleTap,
     );
@@ -40,12 +42,12 @@ class _RunePageListViewState extends State<RunePageListView> {
         if (!snapshot.hasData) {
           return Text("Loading");
         } else {
-          return ListView.separated(
-            separatorBuilder: (bc, i) {
-              return Divider(
-                color: Colors.black,
-              );
-            },
+          return ListView.builder(
+            // separatorBuilder: (bc, i) {
+            //   return Divider(
+            //     color: Colors.black,
+            //   );
+            // },
             itemCount: snapshot.data.length,
             itemBuilder: (bc, i) {
               return RunePageListTile(snapshot.data[i], widget.onSelected);

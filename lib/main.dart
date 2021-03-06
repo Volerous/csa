@@ -68,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(currentRunePage);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -83,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             if (currentRunePage != null)
-              Divider(
+              VerticalDivider(
                 color: Colors.black,
               ),
             if (currentRunePage != null)
